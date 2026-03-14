@@ -1,0 +1,2 @@
+# Shell skriptlar har doim LF (Unix) qator oxiri bilan
+*.sh text eol=lf
