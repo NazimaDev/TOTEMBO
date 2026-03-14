@@ -1,0 +1,5 @@
+# Totembo Django loyihasi — server uchun
+Django>=5.2,<6
+gunicorn>=21.0
+whitenoise>=6.6
+django-svg-image-form-field>=1.0
