@@ -20,3 +20,6 @@ env/
 
 # Media fayllar (foydalanuvchi yuklangan)
 /media/
+
+# Backup fayllar
+/backups/
