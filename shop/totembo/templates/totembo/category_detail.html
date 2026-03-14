@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load totembo_tags %}
+{% load i18n %}
+
+{% block section %}
+<section class="category_products" id="category-products">
+    <div class="products_filter js-category-filter">
+        <div class="container">
+            <div class="row justify-content-between align-items-center g-3">
+                <div class="col-12 col-sm-6 col-lg-3 dropdown pt-2 pt-lx-0">
+                    <button class="products_filter-dropdown dropdown-toggle rounded" type="button" id="dropdownColor"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if current_color %}{{ current_color }}{% else %}{% trans "Цвет" %}{% endif %}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownColor">
+                        {% for c in filter_colors %}
+                        <li><a class="dropdown-item" href="{% category_filter_url color=c %}">{{ c }}</a></li>
+                        {% empty %}
+                        <li><span class="dropdown-item text-muted">—</span></li>
+                        {% endfor %}
+                        {% if current_color %}<li><hr class="dropdown-divider"></li><li><a class="dropdown-item" href="{% category_filter_url color='' %}">{% trans "Сбросить" %}</a></li>{% endif %}
+                    </ul>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 dropdown pt-2 pt-lx-0">
+                    <button class="products_filter-dropdown dropdown-toggle rounded" type="button"
+                            id="dropdownStrapType" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if current_strap %}{{ current_strap }}{% else %}{% trans "Материал / Модель" %}{% endif %}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownStrapType">
+                        {% for m in filter_materials %}
+                        <li><a class="dropdown-item" href="{% category_filter_url strap=m %}">{{ m }}</a></li>
+                        {% empty %}
+                        <li><span class="dropdown-item text-muted">—</span></li>
+                        {% endfor %}
+                        {% if current_strap %}<li><hr class="dropdown-divider"></li><li><a class="dropdown-item" href="{% category_filter_url strap='' %}">{% trans "Сбросить" %}</a></li>{% endif %}
+                    </ul>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 dropdown pt-2 pt-lx-0">
+                    <button class="products_filter-dropdown dropdown-toggle rounded" type="button" id="dropdownSort"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if current_sort == 'price_asc' %}{% trans "Сначала дешевле" %}{% elif current_sort == 'price_desc' %}{% trans "Сначала дороже" %}{% else %}{% trans "Сортировка" %}{% endif %}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownSort">
+                        <li><a class="dropdown-item" href="{% category_filter_url sort='new' %}">{% trans "Что нового" %}</a></li>
+                        <li><a class="dropdown-item" href="{% category_filter_url sort='price_asc' %}">{% trans "Сначала дешевле" %}</a></li>
+                        <li><a class="dropdown-item" href="{% category_filter_url sort='price_desc' %}">{% trans "Сначала дороже" %}</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 dropdown pt-2 pt-lx-0">
+                    <button class="products_filter-dropdown dropdown-toggle rounded" type="button"
+                            id="dropdownWatchType" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if current_watch_type %}{{ current_watch_type }}{% else %}{% trans "Подкатегория" %}{% endif %}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownWatchType">
+                        {% for cat in filter_categories %}
+                        <li><a class="dropdown-item" href="{% category_filter_url watch_type=cat %}">{{ cat }}</a></li>
+                        {% empty %}
+                        <li><span class="dropdown-item text-muted">—</span></li>
+                        {% endfor %}
+                        {% if current_watch_type %}<li><hr class="dropdown-divider"></li><li><a class="dropdown-item" href="{% category_filter_url watch_type='' %}">{% trans "Сбросить" %}</a></li>{% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row products_row">
+            {% for product in products %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="product_card text-center">
+                        <div class="product_card-basket">
+                            <a href="javascript:void(0);"
+                               class="product_card_basket-link basket_icon js-favorite-toggle {% if product.id in favorites %}is-favorite{% endif %}"
+                               data-add-url="{% url 'favorite_add' product.id %}"
+                               data-remove-url="{% url 'favorite_remove' product.id %}"
+                               data-favorited="{% if product.id in favorites %}true{% else %}false{% endif %}">
+                                <svg width="28" height="24" viewBox="0 0 28 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.375 1C4.57813 1 1.5 4.07813 1.5 7.875C1.5 14.75 9.625 21 14 22.4538C18.375 21 26.5 14.75 26.5 7.875C26.5 4.07813 23.4219 1 19.625 1C17.3 1 15.2438 2.15438 14 3.92125C13.3661 3.01825 12.5239 2.28131 11.5447 1.77281C10.5656 1.2643 9.47831 0.999222 8.375 1Z"
+                                          stroke="#0F2859" stroke-width="2" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
+                        <a href="{{ product.get_absolute_url }}" class="product_card-detail">
+                            <div class="w-100">
+                                {% if product.first_photo %}
+                                    <img class="product_card-img img-fluid"
+                                         src="{{ product.first_photo }}"
+                                         alt="{{ product.title }}">
+                                {% elif product.images.first %}
+                                    <img class="product_card-img img-fluid"
+                                         src="{{ product.images.first.image.url }}"
+                                         alt="{{ product.title }}">
+                                {% endif %}
+                            </div>
+                            <div class="product_card-description">
+                                <p class="product_card-name">{{ product.title }}</p>
+                                <p class="product_card-desc">{{ product.category.title }}</p>
+                                <p class="product_card-price">{{ product.price|intcomma }} UZS</p>
+                            </div>
+                        </a>
+                        <a href="javascript:void(0);" data-url="{% url 'cart_add' product.id %}" class="product_card-btn js-add-to-cart">{% trans "В корзину" %}</a>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="mt-4 text-center">{% trans "В этой категории пока нет товаров." %}</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<script>
+(function() {
+    var key = 'category_filter_scroll';
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.location.search && sessionStorage.getItem(key) !== null) {
+            var y = parseInt(sessionStorage.getItem(key), 10);
+            if (!isNaN(y)) window.scrollTo(0, y);
+            sessionStorage.removeItem(key);
+        }
+        var filter = document.querySelector('.js-category-filter');
+        if (filter) {
+            filter.addEventListener('click', function(e) {
+                var a = e.target.closest('a');
+                if (a && a.getAttribute('href') && a.getAttribute('href').indexOf('#') !== 0) {
+                    sessionStorage.setItem(key, String(window.scrollY || 0));
+                }
+            });
+        }
+    });
+})();
+</script>
+{% endblock section %}
+

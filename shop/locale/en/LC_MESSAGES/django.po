@@ -1,0 +1,217 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-14 04:47+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: base_templates/base.html:25
+msgid "Товар добавлен в корзину."
+msgstr "Product added to cart."
+
+#: base_templates/components/_header_panel.html:8
+msgid "Поиск по товарам..."
+msgstr "Search products..."
+
+#: base_templates/components/_header_panel.html:11
+#: base_templates/components/_header_panel.html:13
+msgid "Поиск"
+msgstr "Search"
+
+#: base_templates/components/_header_panel.html:21
+msgid "Корзина"
+msgstr "Cart"
+
+#: base_templates/components/_header_panel.html:33
+msgid "Избранное"
+msgstr "Favorites"
+
+#: base_templates/components/_header_panel.html:43
+#: base_templates/components/_header_panel.html:45
+msgid "Язык"
+msgstr "Language"
+
+#: base_templates/components/_header_panel.html:72
+msgid "Выйти"
+msgstr "Log out"
+
+#: base_templates/components/_header_panel.html:78
+msgid "Вход"
+msgstr "Log in"
+
+#: totembo/templates/totembo/cart.html:13
+msgid "Количество товара"
+msgstr "Quantity"
+
+#: totembo/templates/totembo/cart.html:14
+msgid "Сумма заказа"
+msgstr "Order total"
+
+#: totembo/templates/totembo/cart.html:23
+#: totembo/templates/totembo/checkout.html:19
+msgid "Товар"
+msgstr "Product"
+
+#: totembo/templates/totembo/cart.html:24
+#: totembo/templates/totembo/checkout.html:20
+msgid "Цена"
+msgstr "Price"
+
+#: totembo/templates/totembo/cart.html:25
+msgid "Количество"
+msgstr "Quantity"
+
+#: totembo/templates/totembo/cart.html:26
+#: totembo/templates/totembo/checkout.html:22
+msgid "Итого"
+msgstr "Total"
+
+#: totembo/templates/totembo/cart.html:66
+msgid "Удалить из корзины"
+msgstr "Remove from cart"
+
+#: totembo/templates/totembo/cart.html:75
+msgid "Ваша корзина пуста."
+msgstr "Your cart is empty."
+
+#: totembo/templates/totembo/cart.html:81
+msgid "Очистить корзину"
+msgstr "Clear cart"
+
+#: totembo/templates/totembo/cart.html:83
+#: totembo/templates/totembo/checkout.html:102
+msgid "Оформить заказ"
+msgstr "Checkout"
+
+#: totembo/templates/totembo/category_detail.html:15
+msgid "Цвет"
+msgstr "Color"
+
+#: totembo/templates/totembo/category_detail.html:23
+#: totembo/templates/totembo/category_detail.html:37
+#: totembo/templates/totembo/category_detail.html:62
+msgid "Сбросить"
+msgstr "Reset"
+
+#: totembo/templates/totembo/category_detail.html:29
+msgid "Материал / Модель"
+msgstr "Material / Model"
+
+#: totembo/templates/totembo/category_detail.html:43
+#: totembo/templates/totembo/category_detail.html:47
+msgid "Сначала дешевле"
+msgstr "Price: low to high"
+
+#: totembo/templates/totembo/category_detail.html:43
+#: totembo/templates/totembo/category_detail.html:48
+msgid "Сначала дороже"
+msgstr "Price: high to low"
+
+#: totembo/templates/totembo/category_detail.html:43
+msgid "Сортировка"
+msgstr "Sort"
+
+#: totembo/templates/totembo/category_detail.html:46
+msgid "Что нового"
+msgstr "What's new"
+
+#: totembo/templates/totembo/category_detail.html:54
+msgid "Подкатегория"
+msgstr "Subcategory"
+
+#: totembo/templates/totembo/category_detail.html:106
+#: totembo/templates/totembo/favorites.html:46
+#: totembo/templates/totembo/main.html:61
+#: totembo/templates/totembo/main.html:119
+#: totembo/templates/totembo/search.html:47
+msgid "В корзину"
+msgstr "Add to cart"
+
+#: totembo/templates/totembo/category_detail.html:110
+msgid "В этой категории пока нет товаров."
+msgstr "No products in this category yet."
+
+#: totembo/templates/totembo/checkout.html:12
+msgid "Назад в корзину"
+msgstr "Back to cart"
+
+#: totembo/templates/totembo/checkout.html:14
+msgid "Заказанные товары"
+msgstr "Ordered items"
+
+#: totembo/templates/totembo/checkout.html:21
+msgid "Кол-во"
+msgstr "Qty"
+
+#: totembo/templates/totembo/checkout.html:52
+msgid "Итого к оплате"
+msgstr "Total to pay"
+
+#: totembo/templates/totembo/checkout.html:62
+msgid "Ваши данные"
+msgstr "Your details"
+
+#: totembo/templates/totembo/checkout.html:78
+msgid "Адрес доставки"
+msgstr "Delivery address"
+
+#: totembo/templates/totembo/checkout_success.html:11
+msgid "Заказ оформлен!"
+msgstr "Order placed!"
+
+#: totembo/templates/totembo/checkout_success.html:12
+msgid ""
+"Спасибо за ваш заказ. Мы свяжемся с вами для подтверждения и уточнения "
+"деталей доставки."
+msgstr ""
+"Thank you for your order. We will contact you to confirm and clarify "
+"delivery details."
+
+#: totembo/templates/totembo/checkout_success.html:13
+msgid "Перейти на главную"
+msgstr "Go to homepage"
+
+#: totembo/templates/totembo/favorites.html:9
+msgid "Избранные товары"
+msgstr "Favorites"
+
+#: totembo/templates/totembo/favorites.html:50
+msgid "У вас пока нет избранных товаров."
+msgstr "You have no favorite items yet."
+
+#: totembo/templates/totembo/main.html:9
+msgid "Часы"
+msgstr "Watches"
+
+#: totembo/templates/totembo/main.html:14
+msgid "Механические часы"
+msgstr "Mechanical watches"
+
+#: totembo/templates/totembo/main.html:81
+msgid "Автоматические часы"
+msgstr "Automatic watches"
+
+#: totembo/templates/totembo/search.html:9
+msgid "Результаты поиска"
+msgstr "Search results"
+
+#: totembo/templates/totembo/search.html:52
+#, python-format
+msgid "По запросу «%(q)s» ничего не найдено."
+msgstr "No results found for \"%(q)s\"."
+
+#: totembo/templates/totembo/search.html:54
+msgid "Введите запрос для поиска товаров."
+msgstr "Enter a search query."

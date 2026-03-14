@@ -1,0 +1,87 @@
+{% load i18n %}
+{% if auth_log_form and auth_reg_form %}
+<!-- Login modal -->
+<div class="modal fade" id="authLoginModal" tabindex="-1" aria-labelledby="authLoginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="authLoginModalLabel">{% trans "Вход в аккаунт" %}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Закрыть' %}"></button>
+            </div>
+            <div class="modal-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                <form method="post" action="{% url 'auth' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <input type="hidden" name="login" value="1">
+                    <p>
+                        {{ auth_log_form.username.label_tag }}
+                        {{ auth_log_form.username }}
+                        {{ auth_log_form.username.errors }}
+                    </p>
+                    <p>
+                        {{ auth_log_form.password.label_tag }}
+                        {{ auth_log_form.password }}
+                        {{ auth_log_form.password.errors }}
+                    </p>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-success rounded" type="submit">{% trans "Войти" %}</button>
+                        <a class="btn btn-primary auth-switch-to-register" href="#" data-bs-dismiss="modal" data-bs-target="#authRegisterModal">{% trans "Регистрация" %}</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Register modal -->
+<div class="modal fade" id="authRegisterModal" tabindex="-1" aria-labelledby="authRegisterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="authRegisterModalLabel">{% trans "Регистрация" %}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Закрыть' %}"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'auth' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <input type="hidden" name="register" value="1">
+                    <p>
+                        {{ auth_reg_form.email.label_tag }}
+                        {{ auth_reg_form.email }}
+                        {{ auth_reg_form.email.errors }}
+                    </p>
+                    <p>
+                        {{ auth_reg_form.first_name.label_tag }}
+                        {{ auth_reg_form.first_name }}
+                        {{ auth_reg_form.first_name.errors }}
+                    </p>
+                    <p>
+                        {{ auth_reg_form.last_name.label_tag }}
+                        {{ auth_reg_form.last_name }}
+                        {{ auth_reg_form.last_name.errors }}
+                    </p>
+                    <p>
+                        {{ auth_reg_form.password1.label_tag }}
+                        {{ auth_reg_form.password1 }}
+                        {{ auth_reg_form.password1.errors }}
+                    </p>
+                    <p>
+                        {{ auth_reg_form.password2.label_tag }}
+                        {{ auth_reg_form.password2 }}
+                        {{ auth_reg_form.password2.errors }}
+                    </p>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-success rounded" type="submit">{% trans "Зарегистрироваться" %}</button>
+                        <a class="btn btn-primary auth-switch-to-login" href="#" data-bs-dismiss="modal" data-bs-target="#authLoginModal">{% trans "Вернуться в логин" %}</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}

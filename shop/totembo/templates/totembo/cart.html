@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load i18n %}
+
+{% block section %}
+<section class="cart_section" id="cart-content">
+    <div class="container">
+        <div class="row cart_box">
+            <div class="col-lg-12">
+                <div class="box-element">
+                    <div class="d-flex justify-content-around align-items-center">
+                        <h5>{% trans "Количество товара" %}: <strong id="cart-total-qty">{{ total_quantity }}</strong></h5>
+                        <h5>{% trans "Сумма заказа" %}: <strong id="cart-total-price">{{ total_price|intcomma }} UZS</strong></h5>
+                    </div>
+                    <table class="table">
+                    </table>
+                </div>
+
+                <div class="box-element">
+                    <div class="cart-row cart-row-header">
+                        <div style="flex:2"></div>
+                        <div style="flex:2"><strong>{% trans "Товар" %}</strong></div>
+                        <div style="flex:1"><strong>{% trans "Цена" %}</strong></div>
+                        <div style="flex:1"><strong>{% trans "Количество" %}</strong></div>
+                        <div style="flex:1"><strong>{% trans "Итого" %}</strong></div>
+                        <div style="flex:0.5"></div>
+                    </div>
+
+                    <div class="cart-items-wrapper">
+                        {% for item in items %}
+                        <div class="cart-row align-items-center">
+                            <div style="flex:2">
+                                {% with product=item.product %}
+                                {% if product.first_photo %}
+                                <img src="{{ product.first_photo }}" alt="{{ product.title }}" class="row-image">
+                                {% elif product.images.first %}
+                                <img src="{{ product.images.first.image.url }}" alt="{{ product.title }}" class="row-image">
+                                {% endif %}
+                                {% endwith %}
+                            </div>
+                        <div style="flex:2">
+                            <p>{{ item.product.title }}</p>
+                        </div>
+                        <div style="flex:1">
+                            <p>{{ item.product.price|intcomma }}</p>
+                        </div>
+                        <div style="flex:1" class="d-flex">
+                            <p class="mt-1 js-cart-item-qty">{{ item.quantity }}</p>
+                            <div class="quantity mx-4">
+                                <a href="javascript:void(0);" class="js-cart-inc" data-url="{% url 'cart_add' item.product.id %}">
+                                    <img src="{% static 'images/arrow-up.png' %}" alt="" class="chg-quantity">
+                                </a>
+                                <a href="javascript:void(0);" class="js-cart-dec" data-url="{% url 'cart_remove' item.product.id %}">
+                                    <img src="{% static 'images/arrow-down.png' %}" alt="" class="chg-quantity">
+                                </a>
+                            </div>
+                        </div>
+                        <div style="flex:1">
+                            <p class="js-cart-item-total">{{ item.line_total|intcomma }}</p>
+                        </div>
+                        <div style="flex:0.5" class="d-flex justify-content-center">
+                            <button type="button"
+                                    class="btn btn-danger cart-remove-btn js-cart-remove"
+                                    data-url="{% url 'cart_delete' item.product.id %}"
+                                    aria-label="{% trans 'Удалить из корзины' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="cart-remove-icon">
+                                    <path fill="currentColor" d="M5.5 5.5a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 1 1 0v6a.5.5 0 0 1-1 0v-6zm3-.5a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5z"/>
+                                    <path fill="currentColor" d="M14.5 3a1 1 0 0 1-1 1h-11a1 1 0 1 1 0-2h2.5l.5-1h4l.5 1H13.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V4.059L11.882 4H4.118z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                        {% empty %}
+                        <p class="mt-4">{% trans "Ваша корзина пуста." %}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <a href="{% url 'cart_clear' %}" class="btn btn-danger rounded">{% trans "Очистить корзину" %}</a>
+                    <a href="{% url 'checkout' %}" class="btn btn-success rounded {% if not items %}disabled{% endif %} js-cart-to-checkout">
+                        {% trans "Оформить заказ" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+(function() {
+    var key = 'cart_scroll';
+    document.addEventListener('DOMContentLoaded', function() {
+        var saved = sessionStorage.getItem(key);
+        if (saved !== null) {
+            var y = parseInt(saved, 10);
+            if (!isNaN(y)) window.scrollTo(0, y);
+            sessionStorage.removeItem(key);
+        }
+        var link = document.querySelector('.js-cart-to-checkout');
+        if (link && !link.classList.contains('disabled')) {
+            link.addEventListener('click', function() { sessionStorage.setItem(key, String(window.scrollY || 0)); });
+        }
+    });
+})();
+</script>
+{% endblock section %}
+

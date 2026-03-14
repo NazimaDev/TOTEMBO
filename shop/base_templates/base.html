@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% load static %}
+    {% load i18n %}
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+
+    {% include 'components/_style.html' %}
+
+
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/icons/heart.svg' %}">
+
+    <title>
+        {{ title }}
+    </title>
+</head>
+
+<body class="" data-add-to-cart-msg="{% trans 'Товар добавлен в корзину.' %}">
+
+{% block header %}
+<header>
+
+    <div class="container message">
+
+    </div>
+
+    <!-- HEADER NAV START -->
+
+    <nav class="header_nav">
+        <div class="container">
+            <div class="naw_menu">
+
+                <a href="{% url 'main' %}" class="logo_text">TOTEMBO</a>
+
+                {% include 'components/_nav_menu.html' %}
+
+
+                {% include 'components/_header_panel.html' %}
+
+
+                <!-- BURGER MENU START -->
+                <div class="header_lx-panel">
+                    <input type="checkbox" class="toggler">
+                    <div class="hamburger">
+                        <div></div>
+                    </div>
+                    <div class="menu">
+                        <div>
+                            <div>
+                                <ul>
+                                    <li>
+                                        <a class="header_nav-link" href="{% url 'cart' %}">
+                                            <img src="{% static 'images/icons/basket_icon.svg' %}" alt="">
+                                        </a>
+                                        <span class="header_nav-lang d-flex gap-1 align-items-center">
+                                            <form method="post" action="{% url 'set_language' %}" class="d-inline">
+                                                {% csrf_token %}
+                                                <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                                                <input name="language" type="hidden" value="ru">
+                                                <button type="submit" class="header_nav-link border-0 bg-transparent p-0 js-lang-submit" title="Русский"><img src="{% static 'images/icons/ru_lang_icon.svg' %}" alt="RU"></button>
+                                            </form>
+                                            <form method="post" action="{% url 'set_language' %}" class="d-inline">
+                                                {% csrf_token %}
+                                                <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                                                <input name="language" type="hidden" value="en">
+                                                <button type="submit" class="header_nav-link border-0 bg-transparent p-0 js-lang-submit" title="English"><img src="{% static 'images/icons/en_lang_icon.svg' %}" alt="EN"></button>
+                                            </form>
+                                        </span>
+                                    </li>
+                                    <li class="header_nav-item"><a class="header_nav-link" href="javascript:void(0);">Часы</a></li>
+                                    <li class="header_nav-item"><a class="header_nav-link" href="javascript:void(0);">Кольца</a></li>
+                                    <li class="header_nav-item"><a class="header_nav-link" href="javascript:void(0);">Серьги</a></li>
+                                    <li class="header_nav-item"><a class="header_nav-link" href="javascript:void(0);">Браслеты</a></li>
+                                    <li class="header_nav-item"><a class="header_nav-link" href="javascript:void(0);">Клатчи</a></li>
+                                    <li class="header_nav-item"><a class="header_nav-link" href="javascript:void(0);">Цепочки</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- BURGER MENU END -->
+            </div>
+        </div>
+
+
+    </nav>
+
+    {% include 'components/_auth_modals.html' %}
+
+    <!-- HEADER NAV END -->
+
+    <!-- HEADER TEXT BLOCK START -->
+
+    {% block poster %}
+    <div class="poster">
+        <div class="container title_content">
+            <div class="row justify-content-center block_text">
+                <div class="col-12 text-content">
+                    <h1 class="header_title">Механические наручные
+                        часы Bulova 97A136</h1>
+                    <p class="header_sub-title">Все часы Bulova изготавливаются из
+                        лучших материалов, от прочной нержавеющей
+                        стали для корпусов и браслетов до высококачественной зернистой кожи для ремешков.</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock poster %}
+
+    <!-- HEADER TEXT BLOCK END -->
+
+    <!-- HEADER POSTER START -->
+
+</header>
+{% endblock header %}
+
+{% block main %}
+<main>
+    <!-- BLOCKS GUARANTEES START -->
+
+
+    <div class="blocks_img">
+        <div class="blok_img_main">
+            {% if banner_products.0 %}
+            <a href="{{ banner_products.0.get_absolute_url }}">
+                <img src="{% if banner_products.0.first_photo %}{{ banner_products.0.first_photo }}{% else %}{% static 'images/hand-watch.png' %}{% endif %}" alt="{{ banner_products.0.title }}">
+            </a>
+            <div class="link_img">
+                <a href="javascript:void(0);" class="product_heart basket_icon js-favorite-toggle {% if banner_products.0.id in favorites_ids %}is-favorite{% endif %}"
+                   data-add-url="{% url 'favorite_add' banner_products.0.id %}"
+                   data-remove-url="{% url 'favorite_remove' banner_products.0.id %}"
+                   data-favorited="{% if banner_products.0.id in favorites_ids %}true{% else %}false{% endif %}">
+                    <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.375 1C4.57813 1 1.5 4.07813 1.5 7.875C1.5 14.75 9.625 21 14 22.4538C18.375 21 26.5 14.75 26.5 7.875C26.5 4.07813 23.4219 1 19.625 1C17.3 1 15.2438 2.15438 14 3.92125C13.3661 3.01825 12.5239 2.28131 11.5447 1.77281C10.5656 1.2643 9.47831 0.999222 8.375 1Z" stroke="#0F2859" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </a>
+                <a href="javascript:void(0);" class="cage js-add-to-cart" data-url="{% url 'cart_add' banner_products.0.id %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="Dark" class="bi bi-cart" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                    </svg>
+                </a>
+            </div>
+            {% else %}
+            <img src="{% static 'images/hand-watch.png' %}" alt="">
+            <div class="link_img">
+                <a href="{% url 'favorites' %}" class="product_heart"><svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.375 1C4.57813 1 1.5 4.07813 1.5 7.875C1.5 14.75 9.625 21 14 22.4538C18.375 21 26.5 14.75 26.5 7.875C26.5 4.07813 23.4219 1 19.625 1C17.3 1 15.2438 2.15438 14 3.92125C13.3661 3.01825 12.5239 2.28131 11.5447 1.77281C10.5656 1.2643 9.47831 0.999222 8.375 1Z" stroke="#0F2859" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+                <a href="{% url 'cart' %}" class="cage"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="Dark" class="bi bi-cart" viewBox="0 0 16 16"><path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg></a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="blok_img_column">
+            <div class="blok_first_img">
+                {% if banner_products.1 %}
+                <a href="{{ banner_products.1.get_absolute_url }}">
+                    <img src="{% if banner_products.1.first_photo %}{{ banner_products.1.first_photo }}{% else %}{% static 'images/bracel.png' %}{% endif %}" alt="{{ banner_products.1.title }}">
+                </a>
+                <div class="link_img">
+                    <a href="javascript:void(0);" class="product_heart basket_icon js-favorite-toggle {% if banner_products.1.id in favorites_ids %}is-favorite{% endif %}"
+                       data-add-url="{% url 'favorite_add' banner_products.1.id %}" data-remove-url="{% url 'favorite_remove' banner_products.1.id %}"
+                       data-favorited="{% if banner_products.1.id in favorites_ids %}true{% else %}false{% endif %}">
+                        <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.375 1C4.57813 1 1.5 4.07813 1.5 7.875C1.5 14.75 9.625 21 14 22.4538C18.375 21 26.5 14.75 26.5 7.875C26.5 4.07813 23.4219 1 19.625 1C17.3 1 15.2438 2.15438 14 3.92125C13.3661 3.01825 12.5239 2.28131 11.5447 1.77281C10.5656 1.2643 9.47831 0.999222 8.375 1Z" stroke="#0F2859" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </a>
+                    <a href="javascript:void(0);" class="cage js-add-to-cart" data-url="{% url 'cart_add' banner_products.1.id %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="Dark" class="bi bi-cart" viewBox="0 0 16 16"><path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
+                    </a>
+                </div>
+                {% else %}
+                <img src="{% static 'images/bracel.png' %}" alt="">
+                <div class="link_img">
+                    <a href="{% url 'favorites' %}" class="product_heart"><svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.375 1C4.57813 1 1.5 4.07813 1.5 7.875C1.5 14.75 9.625 21 14 22.4538C18.375 21 26.5 14.75 26.5 7.875C26.5 4.07813 23.4219 1 19.625 1C17.3 1 15.2438 2.15438 14 3.92125C13.3661 3.01825 12.5239 2.28131 11.5447 1.77281C10.5656 1.2643 9.47831 0.999222 8.375 1Z" stroke="#0F2859" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+                    <a href="{% url 'cart' %}" class="cage"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="Dark" class="bi bi-cart" viewBox="0 0 16 16"><path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg></a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="blok_first_img">
+                {% if banner_products.2 %}
+                <a href="{{ banner_products.2.get_absolute_url }}">
+                    <img src="{% if banner_products.2.first_photo %}{{ banner_products.2.first_photo }}{% else %}{% static 'images/serga.png' %}{% endif %}" alt="{{ banner_products.2.title }}">
+                </a>
+                <div class="link_img">
+                    <a href="javascript:void(0);" class="product_heart basket_icon js-favorite-toggle {% if banner_products.2.id in favorites_ids %}is-favorite{% endif %}"
+                       data-add-url="{% url 'favorite_add' banner_products.2.id %}" data-remove-url="{% url 'favorite_remove' banner_products.2.id %}"
+                       data-favorited="{% if banner_products.2.id in favorites_ids %}true{% else %}false{% endif %}">
+                        <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.375 1C4.57813 1 1.5 4.07813 1.5 7.875C1.5 14.75 9.625 21 14 22.4538C18.375 21 26.5 14.75 26.5 7.875C26.5 4.07813 23.4219 1 19.625 1C17.3 1 15.2438 2.15438 14 3.92125C13.3661 3.01825 12.5239 2.28131 11.5447 1.77281C10.5656 1.2643 9.47831 0.999222 8.375 1Z" stroke="#0F2859" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </a>
+                    <a href="javascript:void(0);" class="cage js-add-to-cart" data-url="{% url 'cart_add' banner_products.2.id %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="Dark" class="bi bi-cart" viewBox="0 0 16 16"><path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
+                    </a>
+                </div>
+                {% else %}
+                <img src="{% static 'images/serga.png' %}" alt="">
+                <div class="link_img">
+                    <a href="{% url 'favorites' %}" class="product_heart"><svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.375 1C4.57813 1 1.5 4.07813 1.5 7.875C1.5 14.75 9.625 21 14 22.4538C18.375 21 26.5 14.75 26.5 7.875C26.5 4.07813 23.4219 1 19.625 1C17.3 1 15.2438 2.15438 14 3.92125C13.3661 3.01825 12.5239 2.28131 11.5447 1.77281C10.5656 1.2643 9.47831 0.999222 8.375 1Z" stroke="#0F2859" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+                    <a href="{% url 'cart' %}" class="cage"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="Dark" class="bi bi-cart" viewBox="0 0 16 16"><path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg></a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- BLOCKS GUARANTEES START -->
+    {% block section %}
+
+    {% endblock section %}
+
+    <!-- SLIDER BLOCK START -->
+
+    {% include 'components/_slider.html' %}
+
+
+    <!-- SLIDER BLOCK END -->
+
+    <!-- BLOCK EMAIL FORM START -->
+
+    <div class="email_form">
+        <div class="email_form-block text-center d-flex w-100 h-100 align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="email_form-title">Become part of us!</h3>
+                        <p class="email_form-desc">Join us to get discounts, new product releases and new
+                            arrivals</p>
+
+                        <form class="d-flex" action="{% url 'subscribe_email' %}" method="post">
+                            {% csrf_token %}
+                            <input name="email" class="email_form-input flex-grow-1" type="text"
+                                   placeholder="Your E-mail address...">
+
+                            <button class="email_form-link" type="submit">Sign In</button>
+
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- BLOCK EMAIL FORM END -->
+
+</main>
+{% endblock main %}
+
+
+{% include 'layouts/_footer.html' %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var params = new URLSearchParams(window.location.search);
+        var showAuth = params.get('show_auth');
+        if (showAuth === 'login') {
+            var loginModal = document.getElementById('authLoginModal');
+            if (loginModal) {
+                var m = new bootstrap.Modal(loginModal);
+                m.show();
+            }
+        } else if (showAuth === 'register') {
+            var regModal = document.getElementById('authRegisterModal');
+            if (regModal) {
+                var m = new bootstrap.Modal(regModal);
+                m.show();
+            }
+        }
+        document.querySelectorAll('.auth-switch-to-register').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                e.preventDefault();
+                var loginModal = document.getElementById('authLoginModal');
+                var regModal = document.getElementById('authRegisterModal');
+                if (loginModal && regModal) {
+                    var loginM = bootstrap.Modal.getInstance(loginModal);
+                    if (loginM) loginM.hide();
+                    setTimeout(function() {
+                        var regM = new bootstrap.Modal(regModal);
+                        regM.show();
+                    }, 300);
+                }
+            });
+        });
+        document.querySelectorAll('.auth-switch-to-login').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                e.preventDefault();
+                var regModal = document.getElementById('authRegisterModal');
+                var loginModal = document.getElementById('authLoginModal');
+                if (regModal && loginModal) {
+                    var regM = bootstrap.Modal.getInstance(regModal);
+                    if (regM) regM.hide();
+                    setTimeout(function() {
+                        var loginM = new bootstrap.Modal(loginModal);
+                        loginM.show();
+                    }, 300);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+        $(".owl-carousel").owlCarousel({
+            loop: true,
+            margin: 16,
+            nav: false,
+            autoplay: true,
+            autoplayTimeout: 1500,
+            responsive: {
+                0: { items: 1 },
+                768: { items: 2 },
+                1000: { items: 3 }
+            }
+        });
+    });
+</script>
+
+<script>
+    function setHeaderCartCount(count) {
+        var badge = document.getElementById('header-cart-count');
+        if (!badge) return;
+        if (!count) {
+            badge.classList.add('hidden-badge');
+            badge.textContent = '0';
+        } else {
+            badge.classList.remove('hidden-badge');
+            badge.textContent = count;
+        }
+    }
+
+    function setHeaderFavCount(count) {
+        var badge = document.getElementById('header-fav-count');
+        if (!badge) return;
+        if (!count) {
+            badge.classList.add('hidden-badge');
+            badge.textContent = '0';
+        } else {
+            badge.classList.remove('hidden-badge');
+            badge.textContent = count;
+        }
+    }
+
+    function updateCartRow(url, row) {
+        fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                var totalQtyEl = document.getElementById('cart-total-qty');
+                var totalPriceEl = document.getElementById('cart-total-price');
+                if (totalQtyEl && typeof data.total_quantity !== 'undefined') {
+                    totalQtyEl.textContent = data.total_quantity;
+                }
+                if (totalPriceEl && typeof data.total_price !== 'undefined') {
+                    totalPriceEl.textContent = data.total_price.toLocaleString('ru-RU') + ' UZS';
+                }
+
+                if (data.removed || !data.exists || data.item_quantity === 0) {
+                    if (row && row.parentNode) {
+                        row.parentNode.removeChild(row);
+                    }
+                } else if (row) {
+                    var qtyEl = row.querySelector('.js-cart-item-qty');
+                    var totalEl = row.querySelector('.js-cart-item-total');
+                    if (qtyEl && typeof data.item_quantity !== 'undefined') {
+                        qtyEl.textContent = data.item_quantity;
+                    }
+                    if (totalEl && typeof data.item_line_total !== 'undefined') {
+                        totalEl.textContent = data.item_line_total.toLocaleString('ru-RU');
+                    }
+                }
+
+                if (typeof data.total_quantity !== 'undefined') {
+                    setHeaderCartCount(data.total_quantity);
+                }
+
+                if (data.total_quantity === 0) {
+                    var wrapper = document.querySelector('.cart-items-wrapper');
+                    if (wrapper) {
+                        wrapper.innerHTML = '<p class="mt-4">Ваша корзина пуста.</p>';
+                    }
+                    var checkoutBtn = document.querySelector('.btn-success.rounded');
+                    if (checkoutBtn) {
+                        checkoutBtn.classList.add('disabled');
+                    }
+                }
+            })
+            .catch(function () {
+                // ignore errors
+            });
+    }
+
+    document.addEventListener('click', function (e) {
+        var link = e.target.closest('a[href="#"]');
+        if (link) {
+            e.preventDefault();
+        }
+
+        var langBtn = e.target.closest('.js-lang-submit');
+        if (langBtn) {
+            var form = langBtn.closest('form');
+            if (form) {
+                e.preventDefault();
+                e.stopPropagation();
+                form.submit();
+                return;
+            }
+        }
+
+        const searchToggle = e.target.closest('.js-header-search-toggle');
+        const searchForm = document.querySelector('.header_search-form');
+
+        if (searchToggle) {
+            e.preventDefault();
+            if (searchForm) {
+                searchForm.classList.toggle('header_search-open');
+                const panel = searchForm.closest('.header_panel');
+                if (panel) {
+                    panel.classList.toggle('header_search-open', searchForm.classList.contains('header_search-open'));
+                }
+                if (searchForm.classList.contains('header_search-open')) {
+                    const input = searchForm.querySelector('.header_search-input');
+                    if (input) {
+                        setTimeout(function () {
+                            input.focus();
+                        }, 0);
+                    }
+                }
+            }
+            return;
+        }
+
+        if (searchForm && !e.target.closest('.header_search-form')) {
+            searchForm.classList.remove('header_search-open');
+            const panel = searchForm.closest('.header_panel');
+            if (panel) panel.classList.remove('header_search-open');
+        }
+
+        const favBtn = e.target.closest('.js-favorite-toggle');
+        if (favBtn) {
+            e.preventDefault();
+
+            const isFav = favBtn.dataset.favorited === 'true';
+            const url = isFav ? favBtn.dataset.removeUrl : favBtn.dataset.addUrl;
+            if (!url) return;
+
+            fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                .then(function (response) {
+                    return response.json().catch(function () { return {}; });
+                })
+                .then(function (data) {
+                    const nowFav = !isFav;
+                    favBtn.dataset.favorited = nowFav ? 'true' : 'false';
+                    if (nowFav) {
+                        favBtn.classList.add('is-favorite');
+                    } else {
+                        favBtn.classList.remove('is-favorite');
+                    }
+                    if (typeof data.favorites_count !== 'undefined') {
+                        setHeaderFavCount(data.favorites_count);
+                    }
+                })
+                .catch(function () {
+                    // ignore errors for now
+                });
+        }
+
+        const addBtn = e.target.closest('.js-add-to-cart');
+        if (addBtn) {
+            e.preventDefault();
+            const url = addBtn.dataset.url || addBtn.getAttribute('href');
+            if (!url) return;
+
+            addBtn.classList.add('add-effect');
+
+            fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                .then(function (response) {
+                    return response.json().catch(function () { return {}; });
+                })
+                .then(function (data) {
+                    const box = document.querySelector('.message');
+                    if (box) {
+                        var msg = (document.body && document.body.getAttribute('data-add-to-cart-msg')) || 'Товар добавлен в корзину.';
+                        box.innerHTML = '<div class="alert alert-success alert-dismissible fade show mt-2" role="alert">' + msg + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                        setTimeout(function () {
+                            box.innerHTML = '';
+                        }, 2000);
+                    }
+                    if (typeof data.total_quantity !== 'undefined') {
+                        setHeaderCartCount(data.total_quantity);
+                    }
+                })
+                .catch(function () {
+                    // ignore errors
+                })
+                .finally(function () {
+                    setTimeout(function () {
+                        addBtn.classList.remove('add-effect');
+                    }, 200);
+                });
+        }
+
+        const incBtn = e.target.closest('.js-cart-inc');
+        if (incBtn) {
+            e.preventDefault();
+            const url = incBtn.dataset.url || incBtn.getAttribute('href');
+            if (!url) return;
+            const row = incBtn.closest('.cart-row');
+            updateCartRow(url, row);
+            return;
+        }
+
+        const decBtn = e.target.closest('.js-cart-dec');
+        if (decBtn) {
+            e.preventDefault();
+            const url = decBtn.dataset.url || decBtn.getAttribute('href');
+            if (!url) return;
+            const row = decBtn.closest('.cart-row');
+            updateCartRow(url, row);
+            return;
+        }
+
+        const removeBtn = e.target.closest('.js-cart-remove');
+        if (removeBtn) {
+            e.preventDefault();
+            const url = removeBtn.dataset.url;
+            if (!url) return;
+            const row = removeBtn.closest('.cart-row');
+            updateCartRow(url, row);
+        }
+    });
+</script>
+
+</body>
+</html>

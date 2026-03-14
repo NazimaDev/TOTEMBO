@@ -1,0 +1,19 @@
+{% load static %}
+{% load totembo_tags %}
+{% main_categories as cats %}
+
+<ul class="header_nav-menu">
+    {% for cat in cats %}
+        <li class="header_nav-item">
+            <a class="header_nav-link" href="{% url 'category_detail' slug=cat.slug %}">{{ cat.title }}</a>
+        </li>
+    {% endfor %}
+</ul>
+
+
+
+
+
+
+
+

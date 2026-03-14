@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block header %}
+<header>
+    <div class="container message"></div>
+    <nav class="header_nav">
+        <div class="container">
+            <div class="naw_menu">
+                <a href="{% url 'main' %}" class="logo_text">TOTEMBO</a>
+                {% include 'components/_nav_menu.html' %}
+                {% include 'components/_header_panel.html' %}
+            </div>
+        </div>
+    </nav>
+</header>
+{% endblock header %}
+
+{% block main %}
+<main>
+
+
+    <section class="product_detail">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 d-flex">
+                    <!-- Вертикальные миниатюры -->
+                    {% if product.images.count > 1 %}
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-right:15px;">
+                        <!-- Стрелка вверх -->
+                        <button class="btn__next" onclick="scrollThumbnails(-1)">
+                            <img src="{% static 'images/arrow-up.png' %}"
+                                 style="width:24px; height:24px;">
+                        </button>
+
+                        <!-- Сама мини-галерея -->
+                        <div id="thumbsContainer"
+                             style="display:flex; flex-direction:column; gap:10px; max-height:400px; overflow-y:auto;">
+                            {% for image in product.images.all %}
+                            <img src="{{ image.image.url }}"
+                                 data-index="{{ forloop.counter0 }}"
+                                 alt="{{ product.title }}"
+                                 onclick="changeImage({{ forloop.counter0 }})"
+                                 style="width:80px; height:80px; object-fit:cover; cursor:pointer; border:1px solid #ccc; border-radius:4px;">
+                            {% endfor %}
+                        </div>
+
+                        <!-- Стрелка вниз -->
+                        <button class="btn__prev" onclick="scrollThumbnails(1)">
+                            <img src="{% static 'images/arrow-down.png' %}"
+                                 style="width:24px; height:24px;">
+                        </button>
+                    </div>
+                    {% endif %}
+
+                    <!-- Большая картинка -->
+                    <div class="product_detail-main_image text-center mb-3 flex-grow-1">
+                        <img id="mainImage" src="{{ product.images.first.image.url }}"
+                             alt="{{ product.title }}"
+                             style="max-width: 100%; height: auto; object-fit: contain; border:1px solid #eee; border-radius:5px;">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="product_detail-info" style="padding-left:20px;">
+                        <h2 class="product_detail-title mb-3">{{ product.title }}</h2>
+                        <p class="product_detail-desc mb-3">{{ product.desc }}</p>
+                        <p class="product_detail-price h4 mb-4">{{ product.price|intcomma }} UZS</p>
+
+                        <ul class="product_detail-characteristic" style="font-size: 1.2rem; font-weight:500;">
+                            <li class="product_detail-characteristic_item d-flex justify-content-between">
+                                <span>Модель: </span>
+                                <span>{{ product.model.title }}</span>
+                            </li>
+                            <li class="product_detail-characteristic_item d-flex justify-content-between">
+                                <span>Цвет: </span>
+                                <span>{{ product.color_name }}</span>
+                            </li>
+
+                            <li class="product_detail-characteristic_item d-flex justify-content-between">
+                                <span>Количество: </span>
+                                <span>{{ product.quantity }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <p class="product_detail-guarantee">Бесплатная доставка и возможен возврат в течении 7 дней</p>
+                    <a href="javascript:void(0);" data-url="{% url 'cart_add' product.id %}" class="product_detail-buy_btn js-add-to-cart">ADD TO CART</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="brand_info ">
+        <div class="brand_info-block d-flex flex-column justify-content-center">
+            <h2 class="brand_info-title">Колекция весна - осень</h2>
+            <p class="brand_info-desc">Коллекции брендовых часов на сезон весна-осень 2026 года предлагают сочетание
+                классической элегантности и современных технологий. В тренде остаются швейцарские бренды премиум-класса
+                (Rolex, Omega, Cartier, Rado), функциональные спортивные модели (Breitling, Tag Heuer) и стильные
+                Fashion-аксессуары (Emporio Armani, Calvin Klein). Популярны модели с надежными механизмами,
+                универсальным дизайном и водозащитой, подходящие для переменчивой погоды. </p>
+        </div>
+        <div class="brand_info-img">
+            <img src="{% static 'images/footer_bg.png' %}" alt="">
+        </div>
+    </section>
+
+    <section class="products-section products_section-watches">
+        <h2 class="main_title text-center">Похожие товары</h2>
+
+        <div class="container">
+            <div class="row">
+
+                {% for product in same_products|slice:":4" %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="product_card text-center">
+
+                        <a class="product_card-detail" href="{{ product.get_absolute_url }}">
+                            <div class="w-100">
+                                <img class="product_card-img img-fluid"
+                                     src="{{ product.first_photo }}"
+                                     alt="{{ product.title }}">
+                            </div>
+
+                            <div class="product_card-description">
+                                <p class="product_card-name">{{ product.title }}</p>
+                                <p class="product_card-desc">{{ product.category.title }}</p>
+                                <p class="product_card-price">{{ product.price|intcomma }} UZS</p>
+                            </div>
+                        </a>
+
+                        <a href="javascript:void(0);" data-url="{% url 'cart_add' product.id %}" class="product_card-btn js-add-to-cart">ADD TO CART</a>
+
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Скрипты для Owl Carousel -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $(".product-thumbnails").owlCarousel({
+            loop:false,
+            margin:10,
+            nav:true,
+            dots:false,
+            responsive:{
+                0:{items:3},
+                576:{items:4},
+                768:{items:5},
+                992:{items:6}
+            }
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+<script>
+
+let currentIndex = 0;
+const images = [
+    {% for image in product.images.all %}
+        "{{ image.image.url }}",
+    {% endfor %}
+];
+
+function changeImage(index){
+    currentIndex = index;
+    document.getElementById("mainImage").src = images[currentIndex];
+}
+
+function scrollThumbnails(direction){
+
+    currentIndex += direction;
+
+    if(currentIndex < 0){
+        currentIndex = images.length - 1;
+    }
+
+    if(currentIndex >= images.length){
+        currentIndex = 0;
+    }
+
+    document.getElementById("mainImage").src = images[currentIndex];
+}
+
+
+
+
+
+
+
+
+
+
+</script>
+
+{% endblock main %}

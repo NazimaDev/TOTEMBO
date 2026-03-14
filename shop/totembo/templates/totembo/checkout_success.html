@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block section %}
+<section class="checkout_section checkout_success-section">
+    <div id="checkout-success-confetti" class="checkout-success-confetti" aria-hidden="true"></div>
+    <div class="container py-5 position-relative">
+        <div class="checkout-success-box text-center">
+            <div class="checkout-success-icon">✓</div>
+            <h2 class="checkout-success-title">{% trans "Заказ оформлен!" %}</h2>
+            <p class="checkout-success-text">{% trans "Спасибо за ваш заказ. Мы свяжемся с вами для подтверждения и уточнения деталей доставки." %}</p>
+            <a href="{% url 'main' %}" class="btn btn-primary btn-lg mt-4">{% trans "Перейти на главную" %}</a>
+        </div>
+    </div>
+</section>
+<script>
+(function() {
+    var colors = ['#28a745', '#ffc107', '#17a2b8', '#e83e8c', '#6f42c1'];
+    var container = document.getElementById('checkout-success-confetti');
+    if (!container) return;
+    for (var i = 0; i < 60; i++) {
+        var p = document.createElement('div');
+        p.className = 'checkout-confetti-piece';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDelay = Math.random() * 1.5 + 's';
+        p.style.animationDuration = (2 + Math.random() * 2) + 's';
+        p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        p.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+        container.appendChild(p);
+    }
+})();
+</script>
+{% endblock section %}
+

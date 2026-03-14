@@ -1,0 +1,34 @@
+# Maxfiy fayllar
+.env
+.env.local
+*.env
+shop/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+.Python
+venv/
+env/
+.venv/
+*.egg-info/
+.eggs/
+
+# Django
+shop/db.sqlite3
+shop/static/
+shop/media/
+*.log
+local_settings.py
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

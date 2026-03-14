@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load i18n %}
+
+{% block section %}
+<section class="products-section products_section-watches">
+
+    <h2 class="main_title text-center">{% trans "Часы" %}</h2>
+
+    <div class="container">
+        <div class="row products_row">
+            <div class="col-12">
+                <h2 class="main_title text-center">{% trans "Механические часы" %}</h2>
+            </div>
+            {% for category in categories %}
+            {% for subcat in category.subcategories.all %}
+
+            {% if subcat.title == "Механические часы" %}
+
+            {% for product in subcat.products.all|slice:"::-1"|slice:":4" %}
+
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+
+                <div class="product_card text-center">
+
+                    <div class="product_card-basket">
+                        <a href="javascript:void(0);"
+                           class="product_card_basket-link basket_icon js-favorite-toggle {% if product.id in favorites %}is-favorite{% endif %}"
+                           data-add-url="{% url 'favorite_add' product.id %}"
+                           data-remove-url="{% url 'favorite_remove' product.id %}"
+                           data-favorited="{% if product.id in favorites %}true{% else %}false{% endif %}">
+                            <svg width="28" height="24" viewBox="0 0 28 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.375 1C4.57813 1 1.5 4.07813 1.5 7.875C1.5 14.75 9.625 21 14 22.4538C18.375 21 26.5 14.75 26.5 7.875C26.5 4.07813 23.4219 1 19.625 1C17.3 1 15.2438 2.15438 14 3.92125C13.3661 3.01825 12.5239 2.28131 11.5447 1.77281C10.5656 1.2643 9.47831 0.999222 8.375 1Z"
+                                      stroke="#0F2859"
+                                      stroke-width="2"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <a class="product_card-detail" href="{{ product.get_absolute_url }}">
+
+                        <div class="w-100">
+                            <img class="product_card-img img-fluid"
+                                 src="{{ product.first_photo }}"
+                                 alt="{{ product.title }}">
+                        </div>
+
+                        <div class="product_card-description">
+                            <p class="product_card-name">{{ product.title }}</p>
+                            <p class="product_card-desc">{{ product.category.title }}</p>
+                            <p class="product_card-price">{{ product.price|intcomma }}UZS</p>
+                        </div>
+
+                    </a>
+
+                        <a href="javascript:void(0);" data-url="{% url 'cart_add' product.id %}" class="product_card-btn js-add-to-cart">{% trans "В корзину" %}</a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+            {% endif %}
+
+            {% endfor %}
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row products_row">
+            <div class="col-12">
+                <h2 class="main_title text-center">{% trans "Автоматические часы" %}</h2>
+            </div>
+            {% for category in categories %}
+            {% for subcat in category.subcategories.all %}
+
+            {% if subcat.title == "Автоматические часы" %}
+
+            {% for product in subcat.products.all|slice:"::-1"|slice:":4" %}
+
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="product_card text-center">
+                    <div class="product_card-basket">
+                        <a href="javascript:void(0);"
+                           class="product_card_basket-link basket_icon js-favorite-toggle {% if product.id in favorites %}is-favorite{% endif %}"
+                           data-add-url="{% url 'favorite_add' product.id %}"
+                           data-remove-url="{% url 'favorite_remove' product.id %}"
+                           data-favorited="{% if product.id in favorites %}true{% else %}false{% endif %}">
+                            <svg width="28" height="24" viewBox="0 0 28 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.375 1C4.57813 1 1.5 4.07813 1.5 7.875C1.5 14.75 9.625 21 14 22.4538C18.375 21 26.5 14.75 26.5 7.875C26.5 4.07813 23.4219 1 19.625 1C17.3 1 15.2438 2.15438 14 3.92125C13.3661 3.01825 12.5239 2.28131 11.5447 1.77281C10.5656 1.2643 9.47831 0.999222 8.375 1Z"
+                                      stroke="#0F2859" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <a class="product_card-detail" href="{{ product.get_absolute_url }}">
+                        <div class="w-100">
+                            <img class="product_card-img img-fluid"
+                                 src="{{ product.first_photo }}"
+                                 alt="{{ product.title }}">
+                        </div>
+                        <div class="product_card-description">
+                            <p class="product_card-name">{{ product.title }}</p>
+                            <p class="product_card-desc">{{ product.category.title }}</p>
+                            <p class="product_card-price">{{ product.price|intcomma }}UZS</p>
+                        </div>
+                    </a>
+                    <a href="javascript:void(0);" data-url="{% url 'cart_add' product.id %}" class="product_card-btn js-add-to-cart">{% trans "В корзину" %}</a>
+                </div>
+            </div>
+
+            {% endfor %}
+
+            {% endif %}
+
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+
+</section>
+
+{% endblock section %}
+
+
+
+
+
+
+
+

@@ -1,0 +1,22 @@
+# Maxfiy ma'lumotlar — Git ga yuklanmasin
+.env
+.env.local
+*.env
+
+# DB (ixtiyoriy — serverda boshqa DB bo'lishi mumkin)
+# db.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+venv/
+env/
+.venv/
+
+# Static yig'ilgan fayllar
+/static/
+
+# Media fayllar (foydalanuvchi yuklangan)
+/media/

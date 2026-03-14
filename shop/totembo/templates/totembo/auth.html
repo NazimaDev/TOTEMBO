@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+{% include 'components/_header_panel.html' %}
+{% endblock header %}
+
+
+{% block main %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2 id="form-title">Вход</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Login Form -->
+                    <div id="login-form">
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <input type="hidden" name="login" value="1">
+                            {{ log_form.as_p }}
+                            <button type="submit" class="btn btn-primary w-100">Войти</button>
+                        </form>
+                        <div class="text-center mt-3">
+                            <a href="javascript:void(0);" id="show-register" class="text-decoration-none">Нет аккаунта? Зарегистрироваться</a>
+                        </div>
+                    </div>
+
+                    <!-- Register Form -->
+                    <div id="register-form" style="display: none;">
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <input type="hidden" name="register" value="1">
+                            {{ reg_form.as_p }}
+                            <button type="submit" class="btn btn-success w-100">Зарегистрироваться</button>
+                        </form>
+                        <div class="text-center mt-3">
+                            <a href="javascript:void(0);" id="show-login" class="text-decoration-none">Уже есть аккаунт? Войти</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var showRegister = {% if show_register %}true{% else %}false{% endif %};
+    if (showRegister) {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('register-form').style.display = 'block';
+        document.getElementById('form-title').textContent = 'Регистрация';
+    }
+});
+
+document.getElementById('show-register').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('register-form').style.display = 'block';
+    document.getElementById('form-title').textContent = 'Регистрация';
+});
+
+document.getElementById('show-login').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('register-form').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+    document.getElementById('form-title').textContent = 'Вход';
+});
+</script>
+
+{% endblock main %}
+
+
+

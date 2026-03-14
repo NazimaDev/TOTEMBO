@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% load i18n %}
+
+{% block section %}
+<section class="checkout_section">
+    <div class="container">
+        <div class="row cart_box">
+            <div class="col-lg-6">
+                <div class="box-element">
+                    <a href="{% url 'cart' %}" class="btn btn-success rounded">{% trans "Назад в корзину" %}</a>
+                    <hr>
+                    <h3>{% trans "Заказанные товары" %}</h3>
+                    <hr>
+
+                    <div class="cart-row">
+                        <div style="flex:2"></div>
+                        <div style="flex:2"><strong>{% trans "Товар" %}</strong></div>
+                        <div style="flex:1"><strong>{% trans "Цена" %}</strong></div>
+                        <div style="flex:1"><strong>{% trans "Кол-во" %}</strong></div>
+                        <div style="flex:1"><strong>{% trans "Итого" %}</strong></div>
+                    </div>
+
+                    {% for item in items %}
+                    <div class="cart-row align-items-center">
+                        <div style="flex:2">
+                            {% with product=item.product %}
+                            {% if product.first_photo %}
+                            <img src="{{ product.first_photo }}" alt="{{ product.title }}" class="row-image">
+                            {% elif product.images.first %}
+                            <img src="{{ product.images.first.image.url }}" alt="{{ product.title }}" class="row-image">
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div style="flex:2">
+                            <p>{{ item.product.title }}</p>
+                        </div>
+                        <div style="flex:1">
+                            <p>{{ item.product.price|intcomma }}</p>
+                        </div>
+                        <div style="flex:1" class="d-flex">
+                            <p class="mt-1">{{ item.quantity }}</p>
+                        </div>
+                        <div style="flex:1">
+                            <p>{{ item.line_total|intcomma }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <hr>
+                    <h5>{% trans "Итого к оплате" %}: <strong>{{ total_price|intcomma }} UZS</strong></h5>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="box-element">
+                    <form method="post" id="checkout-form">
+                        {% csrf_token %}
+                        <div id="user-info">
+                            <hr>
+                            <p>{% trans "Ваши данные" %}</p>
+                            <hr>
+                            <div class="form-field">
+                                {{ form.first_name }}
+                                {{ form.first_name.errors }}
+                            </div>
+                            <div class="form-field">
+                                {{ form.last_name }}
+                                {{ form.last_name.errors }}
+                            </div>
+                        </div>
+
+                        <div id="shipping-info">
+                            <hr>
+                            <p>{% trans "Адрес доставки" %}</p>
+                            <hr>
+                            <div class="form-field">
+                                {{ form.address }}
+                                {{ form.address.errors }}
+                            </div>
+                            <div class="form-field">
+                                {{ form.city }}
+                                {{ form.city.errors }}
+                            </div>
+                            <div class="form-field">
+                                {{ form.region }}
+                                {{ form.region.errors }}
+                            </div>
+                            <div class="form-field">
+                                {{ form.phone }}
+                                {{ form.phone.errors }}
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success rounded" type="submit">{% trans "Оформить заказ" %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% if form.errors %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var el = document.getElementById('checkout-form');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+</script>
+{% endif %}
+{% endblock section %}
+
